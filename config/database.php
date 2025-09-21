@@ -78,7 +78,10 @@ $db =  [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
-            'options' => env('DB_OPTIONS', null),
+            'options' => extension_loaded('pdo_pgsql') ? [
+                PDO::PGSQL_ATTR_DISABLE_PREPARES => true,
+                'options' => '-c endpoint=' . env('DB_ENDPOINT_ID'),
+            ] : [],
         ],
 
         'sqlsrv' => [
